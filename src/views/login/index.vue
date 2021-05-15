@@ -1,17 +1,17 @@
 <template>
     <div class="login-container">
-        <el-form class="login-form" ref="form" :model="user" >
-					<el-form-item >
+        <el-form  class="login-form" ref="form" :model="user" :rules="rules">
+					<el-form-item prop="num" >
 						<el-input v-model="user.num" placeholder="请输入电话号码"></el-input>
 					</el-form-item>
-					<el-form-item >
+					<el-form-item prop="code">
 						<el-input v-model="user.code" placeholder="请输入验证码"></el-input>
 					</el-form-item>
 					<el-form-item >
-						<el-checkbox v-model="checked">我已同意用户条约和隐私协议</el-checkbox>
+						<el-checkbox v-model="isagree">我已同意用户条约和隐私协议</el-checkbox>
 					</el-form-item>
 					<el-form-item>
-						<el-button class="login-btn" type="primary" @click="onSubmit">登录</el-button>
+						<el-button class="login-btn" type="primary" @click="onSubmit" :loading="loginLoading">登录</el-button>
 					</el-form-item>
 			</el-form>
     </div>
@@ -24,29 +24,61 @@ import request from '@/utils/request'
         data(){
             return {
               user: {
-								num: '',//手机号
-								code: ''//验证码
-        			},
-							 checked: false
+							num: '',//手机号
+							code: '',//验证码
+							isagree: flase
+        		},
+							rules: {
+								num: [
+									{ required: true, message: '请输入账号', trigger: 'blur' },
+            			{ min: 11, max: 11, message: '长度为11个字符', trigger: 'blur' }
+									],
+								code: [
+									{ required: true, message: '请输入密码', trigger: 'blur' },
+            			{ min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+									]
+							},
+							loginLoading: false,
 						}
           },
 				methods: {
       		onSubmit() {
         		const user = this.user;
 						//验证表单
-
+						this.$refs['form'].validate((valid) => {
+          		if (valid) {
+            		this.login()
+          	} else {
+            		console.log('error submit!!');
+            		return false;
+          	}
+					})
+				},
+					login(){
+						//开启登录等待
+							this.loginLoading = true,
 						//验证通过， 提交登录
 						request({
-							method: 'POST',
-							url: '/mp/v1_0/authorizations',
-							data: user
-						}).then( res => {
-							console.log(res)
-						})
-
+								method: 'POST',
+								url: '/mp/v1_0/authorizations',
+								// data 用来设置 POST 请求体
+								data: this.user
+							}).then(res => {
+								console.log(res)
+								this.$message({
+									message: '恭喜你，登录成功',
+									type: 'success'
+								});
+								this.loginLoading = false
+								// 登录成功
+							}).catch(err => {
+								console.log('登录失败', err)
+								// 登录失败
+								this.$message.error('手机或密码错误');
+							})
+					}
       }
 		}
-  }
 </script>
 <style scoped lang="less">
 .login-container{ 
