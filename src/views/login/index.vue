@@ -43,7 +43,6 @@ import request from '@/utils/request'
           },
 				methods: {
       		onSubmit() {
-        		const user = this.user;
 						//验证表单
 						this.$refs['form'].validate((valid) => {
           		if (valid) {
@@ -69,7 +68,9 @@ import request from '@/utils/request'
 									message: '恭喜你，登录成功',
 									type: 'success'
 								});
-								this.loginLoading = false
+								this.loginLoading = false;
+								//登录成功跳转到主页
+								this.$router.push('/home')
 								// 登录成功
 							}).catch(err => {
 								console.log('登录失败', err)
