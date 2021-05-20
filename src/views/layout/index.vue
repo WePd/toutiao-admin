@@ -11,7 +11,9 @@
         <el-dropdown :hide-on-click="false">
           <div class="avatar-wrap">
             <img class="avatar" src="../home/user.jpg" >
+            <!-- // 可以登录的时候就不用了写死了，{{ user.photo }} -->
             <span>昵称</span>
+            <!-- {{ user.name }} -->
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -35,7 +37,9 @@ import { getUserInfo } from '@/api/user'
    name:'layoutIndex',
    data () {
      return {
-
+       user: {
+          //当前登录用户信息
+       },
      }
    },
    components: {
@@ -47,7 +51,7 @@ import { getUserInfo } from '@/api/user'
    methods: {
      loadUserInfo(){
        getUserInfo().then(res => {
-         console.log(res)
+         this.user = res.data.data
        })
      }
    }

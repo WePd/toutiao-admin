@@ -1,5 +1,8 @@
 # toutiao-ele-admin
 
+### 头条项目仿写
+基于Vue栈 + Element UI 
+
 ## Project setup
 ```
 npm install
@@ -16,5 +19,4 @@ npm run build
 ```
 
 
-### 头条项目仿写
-基于Vue栈 + Element UI 
+
