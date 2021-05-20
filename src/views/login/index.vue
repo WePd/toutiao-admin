@@ -81,7 +81,7 @@ export default {
             window.localStorage.setItem("user", JSON.stringify(res.data.data));
 
             //登录成功跳转到主页
-            this.$router.push("/home");
+            this.$router.push("/");
             // 登录成功
           }).catch((err) => {
             console.log("登录失败", err);

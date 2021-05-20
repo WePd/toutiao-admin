@@ -10,9 +10,9 @@
       </div> 
         <el-dropdown :hide-on-click="false">
           <div class="avatar-wrap">
-            <img class="avatar" src="../home/user.jpg" >
+            <img class="avatar" :src="user.name" >
             <!-- // 可以登录的时候就不用了写死了，{{ user.photo }} -->
-            <span>昵称</span>
+            <span>{{ user.name}}</span>
             <!-- {{ user.name }} -->
             <i class="el-icon-arrow-down el-icon--right"></i>
           </div>
@@ -51,7 +51,7 @@ import { getUserInfo } from '@/api/user'
    methods: {
      loadUserInfo(){
        getUserInfo().then(res => {
-         this.user = res.data.data
+         this.user = res.data.data;
        })
      }
    }

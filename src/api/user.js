@@ -7,9 +7,9 @@ export const getUserInfo = () => {
     const user = JSON.parse(window.localStorage.getItem('user'))
     return request({
         method: 'GET',
-        url: '/mp/v1_0/user/profile',
+        url: '/app/v1_0/user/profile',
         headers: {
-            // Authorization: `Bearer ${ user.token }` //ES6字符串拼接
+            Authorization: `Bearer ${ user.token }` //ES6字符串拼接
         }
     })
 } 
