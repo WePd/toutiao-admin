@@ -10,7 +10,7 @@
       </div> 
         <el-dropdown :hide-on-click="false">
           <div class="avatar-wrap">
-            <img class="avatar" :src="user.name" >
+            <img class="avatar" :src="user.photo" >
             <!-- // 可以登录的时候就不用了写死了，{{ user.photo }} -->
             <span>{{ user.name}}</span>
             <!-- {{ user.name }} -->

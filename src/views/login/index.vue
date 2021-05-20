@@ -69,7 +69,6 @@ export default {
           // data 用来设置 POST 请求体
           data: this.user,
         }).then((res) => {
-            console.log(res);
             this.$message({
               message: "恭喜你，登录成功",
               type: "success",
