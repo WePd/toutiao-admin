@@ -4,7 +4,22 @@
     <app-Aside class="aside-menu"/>
   </el-aside>
   <el-container>
-    <el-header>头条管理</el-header>
+    <el-header >
+      <div>
+        <i class="el-icon-s-fold">头条管理</i>
+      </div> 
+        <el-dropdown :hide-on-click="false">
+          <div class="avatar-wrap">
+            <img class="avatar" src="../home/user.jpg" >
+            <span>昵称</span>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>个人设置</el-dropdown-item>
+          <el-dropdown-item>退出登录</el-dropdown-item>
+        </el-dropdown-menu>
+    </el-dropdown>
+    </el-header>
     <el-main>
       <router-view></router-view>
     </el-main>
@@ -14,6 +29,7 @@
 
 <script>
 import appAside from './components/aside'
+import { getUserInfo } from '@/api/user'
 
  export default {
    name:'layoutIndex',
@@ -24,6 +40,16 @@ import appAside from './components/aside'
    },
    components: {
      appAside
+   },
+   created(){
+     this.loadUserInfo()
+   },
+   methods: {
+     loadUserInfo(){
+       getUserInfo().then(res => {
+         console.log(res)
+       })
+     }
    }
  }
 </script>
@@ -37,11 +63,14 @@ import appAside from './components/aside'
   bottom: 0;
   
 }
- .el-header, .el-footer {
-    background-color: #B3C0D1;
+ .el-header {
     color: #333;
-    text-align: center;
     line-height: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px slid #ccc;
   }
   
   .el-aside {
@@ -73,6 +102,17 @@ import appAside from './components/aside'
   
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
+  }
+
+  .avatar-wrap{
+    display: flex;
+    align-items:center;
+    .avatar{
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
   }
 </style>
 
