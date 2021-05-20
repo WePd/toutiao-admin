@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form class="login-form" ref="form" :model="user" :rules="rules">
       <el-form-item prop="num">
-        <el-input v-model="user.num" placeholder="请输入电话号码"></el-input>
+        <el-input v-model="user.mobile" placeholder="请输入电话号码"></el-input>
       </el-form-item>
       <el-form-item prop="code">
         <el-input v-model="user.code" placeholder="请输入验证码"></el-input>
@@ -30,12 +30,12 @@ export default {
   data() {
     return {
       user: {
-        num: "", //手机号
-        code: "", //验证码
+        mobile: '13911111111', //手机号
+        code: "246810", //验证码
         isagree: false,
       },
       rules: {
-        num: [
+        mobile: [
           { required: true, message: "请输入账号", trigger: "blur" },
           { min: 11, max: 11, message: "长度为11个字符", trigger: "blur" },
         ],
@@ -65,7 +65,7 @@ export default {
         //验证通过， 提交登录
         request({
           method: 'POST',
-          url: "/mp/v1_0/authorizations",
+          url: "/app/v1_0/authorizations",
           // data 用来设置 POST 请求体
           data: this.user,
         }).then((res) => {
@@ -78,13 +78,12 @@ export default {
 
             //将接口返回的用户数据放到本地存储，方便读取
             // 本地用户只能存储字符串，如果需要存储数组、对象等则需要把他们转为JSON
-            window.localStorage.setItems("user", JSON.stringify(res.data.data));
+            window.localStorage.setItem("user", JSON.stringify(res.data.data));
 
             //登录成功跳转到主页
             this.$router.push("/home");
             // 登录成功
-          })
-          .catch((err) => {
+          }).catch((err) => {
             console.log("登录失败", err);
             // 登录失败
             this.$message.error("手机或密码错误");
