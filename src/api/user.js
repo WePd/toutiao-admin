@@ -8,8 +8,8 @@ export const getUserInfo = () => {
     return request({
         method: 'GET',
         url: '/app/v1_0/user/profile',
-        headers: {
-            Authorization: `Bearer ${ user.token }` //ES6字符串拼接
-        }
+        // headers: {
+        //     Authorization: `Bearer ${ user.token }` //ES6字符串拼接
+        // }
     })
 } 

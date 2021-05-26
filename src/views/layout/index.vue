@@ -1,13 +1,18 @@
 <template>
  <el-container class="layout-container">
-  <el-aside  class="aside" width="200px" >
-    <app-Aside class="aside-menu"/>
+  <el-aside  class="aside" width="auto" >
+    <app-Aside class="aside-menu" :is-collapse="isCollapse"/>
   </el-aside>
   <el-container>
     <el-header >
       <div>
-        <i class="el-icon-s-fold">头条管理</i>
-      </div> 
+        <i @click="isCollapse = !isCollapse" 
+        :class="{
+          'el-icon-s-fold': isCollapse,
+          'el-icon-s-unfold': !isCollapse,
+          }
+        ">头条管理</i>
+      </div>  
         <el-dropdown :hide-on-click="false">
           <div class="avatar-wrap">
             <img class="avatar" :src="user.photo" >
@@ -40,6 +45,7 @@ import { getUserInfo } from '@/api/user'
        user: {
           //当前登录用户信息
        },
+       isCollapse: false
      }
    },
    components: {

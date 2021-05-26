@@ -5,6 +5,9 @@
       text-color="#fff"
       active-text-color="#ffd04b"
       router
+      :collapse="isCollapse"
+      @open="handleOpen" 
+      @close="handleClose"
       >
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
@@ -40,15 +43,16 @@
 <script>
  export default {
    name:'aside',
+   props: ['is-collapse'],
    data () {
      return {
-
      }
    },
    components: {
 
    },
    methods: {
+      
     }
  }
 </script>
