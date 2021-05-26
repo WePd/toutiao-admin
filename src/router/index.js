@@ -31,4 +31,14 @@ const router = new VueRouter({
   routes
 })
 
+//前置导航守卫
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  //检测本地localstorge
+  const user = Json.parse(window.localStorage.getItem('user'));
+  if(to.name != 'login' ){
+    
+  }
+  else next()
+})
 export default router

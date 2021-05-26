@@ -6,8 +6,6 @@
       active-text-color="#ffd04b"
       router
       :collapse="isCollapse"
-      @open="handleOpen" 
-      @close="handleClose"
       >
       <el-menu-item index="/">
         <i class="el-icon-s-home"></i>
