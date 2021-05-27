@@ -23,7 +23,8 @@
           </div>
           <el-dropdown-menu slot="dropdown">
           <el-dropdown-item>个人设置</el-dropdown-item>
-          <el-dropdown-item>退出登录</el-dropdown-item>
+          <!-- TODO 若是想要在vue中继承一个原事件，则可在事件后面加上.native -->
+          <el-dropdown-item @click.native="onLogout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
     </el-dropdown>
     </el-header>
@@ -59,6 +60,24 @@ import { getUserInfo } from '@/api/user'
        getUserInfo().then(res => {
          this.user = res.data.data;
        })
+     },
+     onLogout(){
+       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          th//把用户的登录状态清楚调
+          window.localStorage.removeItem('user')
+          //跳转到登录界面
+          this.$router.push('/login')
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+       
      }
    }
  }
