@@ -62,19 +62,19 @@ import { getUserInfo } from '@/api/user'
        })
      },
      onLogout(){
-       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+       this.$confirm('此操作将退出登录, 是否继续?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          th//把用户的登录状态清楚调
+          //把用户的登录状态清楚调
           window.localStorage.removeItem('user')
           //跳转到登录界面
           this.$router.push('/login')
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: '已取消退出'
           });          
         });
        
