@@ -86,9 +86,14 @@ import { getArticles } from '@/api/articles'
    data () {
      return {
           form: {
+          name: '',
           region: '',
+          date1: '',
+          date2: '',
           delivery: false,
+          type: [],
           resource: '',
+          desc: ''
         },
 					value1: '',
 					tableData: [{
@@ -113,7 +118,7 @@ import { getArticles } from '@/api/articles'
    methods: {
      loadArticles() {
        getArticles().then(res => {
-         console.log(res)
+         console.log(res.data)
        })
      },
       onSubmit() {
