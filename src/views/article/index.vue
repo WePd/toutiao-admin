@@ -79,6 +79,8 @@
 </template>
 
 <script>
+import { getArticles } from '@/api/articles'
+
  export default {
    name:'ArticleIndex',
    data () {
@@ -109,10 +111,18 @@
      }
    },
    methods: {
+     loadArticles() {
+       getArticles().then(res => {
+         console.log(res)
+       })
+     },
       onSubmit() {
         console.log('submit!');
       }
     },
+		created(){
+			this.loadArticles()
+		},
    components: {
 
    }
