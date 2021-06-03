@@ -118,7 +118,7 @@ import { getArticles } from '@/api/articles'
    methods: {
      loadArticles() {
        getArticles().then(res => {
-         console.log(res.data)
+         console.log(res)
        })
      },
       onSubmit() {

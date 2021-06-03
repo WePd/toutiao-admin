@@ -14,6 +14,7 @@ request.interceptors.request.use(
         //config为当前用户的配置信息
         // console.log(config)
         const user = JSON.parse(window.localStorage.getItem('user'))
+        // console.log(user)
         if(user){
             //如果有登录信息，则统一设置token
             config.headers.Authorization =   `Bearer ${ user.token }`
