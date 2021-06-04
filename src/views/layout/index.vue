@@ -59,6 +59,7 @@ import { getUserInfo } from '@/api/user'
      loadUserInfo(){
        getUserInfo().then(res => {
          this.user = res.data.data;
+         console.log(this.user)
        })
      },
      onLogout(){

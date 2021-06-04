@@ -65,7 +65,7 @@ export default {
         //验证通过， 提交登录
         request({
           method: 'POST',
-          url: "/app/v1_0/authorizations",
+          url: "/mp/v1_0/authorizations",
           // data 用来设置 POST 请求体
           data: this.user,
         }).then((res) => {
@@ -77,7 +77,7 @@ export default {
 
             //将接口返回的用户数据放到本地存储，方便读取
             // 本地用户只能存储字符串，如果需要存储数组、对象等则需要把他们转为JSON
-            window.localStorage.setItem("user", JSON.stringify(res.data.data));
+            window.localStorage.setItem('user', JSON.stringify(res.data));
 
             //登录成功跳转到主页
             this.$router.push("/");

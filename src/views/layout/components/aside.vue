@@ -40,7 +40,7 @@
 
 <script>
  export default {
-   name:'aside',
+   name:'Aside',
    props: ['is-collapse'],
    data () {
      return {

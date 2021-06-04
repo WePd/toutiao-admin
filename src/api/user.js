@@ -6,7 +6,7 @@ export const getUserInfo = () => {
     //因为获取到的是JSON字符串，我们需要把他还原回去。
     return request({
         method: 'GET',
-        url: '/app/v1_0/user/profile',
+        url: '/mp/v1_0/user/profile'
         // headers: {
         //     Authorization: `Bearer ${ user.token }` //ES6字符串拼接
         // }

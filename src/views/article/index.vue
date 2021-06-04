@@ -46,24 +46,43 @@
 		根据筛选条件工查询到4444条数据：
   </div>
 	<!-- 用表格实现浏览 -->
+  <!--
+    表格组件
+    1. 先绑定数据源到data属性
+    2.
+  -->
   <el-table
-      :data="tableData"
+      :data="articles"
 			stripe
       style="width: 100%"
 			class="list-table">
       <el-table-column
-        prop="date"
-        label="日期"
+        prop="images"
+        label="封面"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名"
+        prop="title"
+        label="标题"
         width="180">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址">
+        prop="status"
+        label="状态">
+      </el-table-column>
+      <el-table-column
+        prop="pubdate"
+        label="发布时间">
+      </el-table-column>
+      <el-table-column
+        label="操作">
+         <template >
+        <el-button
+          size="mini" icon="el-icon-edit"  type="success" circle></el-button>
+        <el-button
+          size="mini"
+          type="danger" icon="el-icon-delete" circle></el-button>
+      </template>
       </el-table-column>
     </el-table>
 		<!-- 分页效果 -->
@@ -96,29 +115,15 @@ import { getArticles } from '@/api/articles'
           desc: ''
         },
 					value1: '',
-					tableData: [{
-            date: '2016-05-02',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1518 弄'
-          }, {
-            date: '2016-05-04',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1517 弄'
-          }, {
-            date: '2016-05-01',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1519 弄'
-          }, {
-            date: '2016-05-03',
-            name: '王小虎',
-            address: '上海市普陀区金沙江路 1516 弄'
-          }]
+          articles: [],
      }
    },
    methods: {
      loadArticles() {
        getArticles().then(res => {
+         //先不用传参，等到做分页的时候再传参
          console.log(res)
+         this.articles = res.data.data.results
        })
      },
       onSubmit() {

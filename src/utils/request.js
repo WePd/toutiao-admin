@@ -17,13 +17,13 @@ request.interceptors.request.use(
         // console.log(user)
         if(user){
             //如果有登录信息，则统一设置token
-            config.headers.Authorization =   `Bearer ${ user.token }`
+            config.headers.Authorization = `Bearer ${ user.data.token }`
         }
         return config
     },
     function(error){
         return Promise.reject(error)
-    }
+    }   
 )
 //响应拦截器
 export default request
