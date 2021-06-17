@@ -37,15 +37,18 @@
 		</el-form-item>
 		<el-form-item label="日期：">
 			 <el-date-picker
-      	v-model="value1"
+      	v-model="rangeDate"
       	type="datetimerange"
       	start-placeholder="开始日期"
       	end-placeholder="结束日期"
-      	:default-time="['12:00:00']">
+      	:default-time="['12:00:00']"
+        format="yyyy-MM-dd"
+        value-format="yyyy-MM-dd"
+        >
     </el-date-picker>
 		</el-form-item>
 		<el-form-item>
-			<el-button type="primary" @click="loadArticles(1)">筛选</el-button>
+			<el-button type="primary" @click="loadArticles(1)" :disabled="loading">筛选</el-button>
 		</el-form-item>
 </el-form>
 </el-card>
@@ -61,10 +64,12 @@
     2.
   -->
   <el-table
-      :data="articles"
-			stripe
-      style="width: 100%"
-			class="list-table">
+        :data="articles"
+        stripe
+        style="width: 100%"
+        class="list-table"
+        v-loading="loading"
+      >
       <el-table-column
         prop="images"
         label="封面"
@@ -95,12 +100,14 @@
       </el-table-column>
       <el-table-column
         label="操作">
-         <template >
+      <template slot-scope="scope">
         <el-button
           size="mini" icon="el-icon-edit"  type="success" circle></el-button>
         <el-button
           size="mini"
-          type="danger" icon="el-icon-delete" circle></el-button>
+          type="danger" icon="el-icon-delete" circle
+          @click="onDeleteArticle(scope.row.id)"
+          ></el-button>
       </template>
       </el-table-column>
     </el-table>
@@ -110,7 +117,9 @@
 			layout="prev, pager, next"
 			:total="totalCount"
       @current-change="onCurrentChange"
-      :page-size="pageSize"> 
+      :page-size="pageSize"
+      :disabled="loading"
+      :current-page.sync="page"> 
 		</el-pagination>
 </el-card>
 
@@ -119,7 +128,7 @@
 </template>
 
 <script>
-import { getArticles, getArticlesChannels } from '@/api/articles'
+import { getArticles, getArticlesChannels, deleteArticle } from '@/api/articles'
 
  export default {
    name:'ArticleIndex',
@@ -147,21 +156,30 @@ import { getArticles, getArticlesChannels } from '@/api/articles'
           status: null, //文章状态码
           channels: [],
           channelId: null,
+          rangeDate: null,
+          loading: true,  //报个数据加载
+          page: 1
      }
    },
    methods: {
      loadArticles(page = 1) {
+       this.loading = true
        getArticles({
          page,
          per_page: this.pageSize,
          status: this.status,
-         channel_id: this.channelId
+         channel_id: this.channelId,
+         begin_pubdate: this.rangeDate ? this.rangeDate[0] : null, //开始日期
+         end_pubdate: this.rangeDate ? this.rangeDate[1] : null // 结束日期
        }).then(res => {
-         //先不用传参，等到做分页的时候再传参
+         //先不用传参，等到做分页的时候再传参 
         //  console.log(res)
-        const { results, total_count} = res.data.data
+        const { results, total_count } = res.data.data
          this.articles = results
          this.totalCount = total_count
+
+         //关闭加载。。。
+         this.loading = false
        })
      },
       // 分页处理函数
@@ -178,10 +196,30 @@ import { getArticles, getArticlesChannels } from '@/api/articles'
           // console.log(res.data.data.channels)
           this.channels = res.data.data.channels
         })
+      },
+      onDeleteArticle(articleId){
+          this.$confirm('确认删除吗', '提示', { 
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteArticle(articleId.toString()).then(res => {
+            // console.log(res)
+            //删除成功，更新文章数据列表
+            this.loadArticles(this.page)//这个地方传参要传页码，拿到页码的方式
+          }) 
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+
       }
+      
     },
 		created(){
-			this.loadArticles(1)
+			this.loadArticles(1) 
 			this.loadChannels()
 		},
    components: {

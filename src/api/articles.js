@@ -23,3 +23,14 @@ export const getArticlesChannels = params => {
         //Header参数使用header设置
     })
 }
+
+//删除文章
+export const deleteArticle = articleId => {
+    return request({ 
+        method: 'DELETE',
+        url: `/mp/v1_0/articles/${articleId}`,
+        //Body参数使用data设置
+        //Query参数使用params设置
+        //Header参数使用header设置
+    })
+}

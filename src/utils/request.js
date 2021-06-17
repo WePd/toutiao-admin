@@ -1,11 +1,19 @@
 //todo基于axios的请求模块
 import axios from 'axios'
+import JSONbig from 'json-bigint'
 
 // 创建axios实例
 const request = axios.create({
     //基础路径
-   baseURL: 'http://api-toutiao-web.itheima.net'
-
+   baseURL: 'http://api-toutiao-web.itheima.net',
+   //定义后端返回原始数据的处理
+   transformResponse: [function(data){
+       try{
+        return JSONbig.parse(data)
+       } catch(err) {
+				 return data
+			 } 
+   }]
 })
 
 //请求拦截器++++
