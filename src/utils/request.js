@@ -8,7 +8,7 @@ const request = axios.create({
 
 })
 
-//请求拦截器
+//请求拦截器++++
 request.interceptors.request.use(
     function(config){
         //config为当前用户的配置信息

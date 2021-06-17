@@ -43,7 +43,7 @@
 
 <el-card class="box-card">
   <div slot="header" class="clearfix">
-		根据筛选条件工查询到4444条数据：
+		根据筛选条件工查询到{{ totalCount }}条数据：
   </div>
 	<!-- 用表格实现浏览 -->
   <!--
@@ -60,6 +60,10 @@
         prop="images"
         label="封面"
         width="180">
+        <!-- //文章列表图片显示 -->
+        <template slot-scope="scope">
+          <img class="articles-cover"  :src="scope.row.cover.images[0]" alt="">
+        </template>
       </el-table-column>
       <el-table-column
         prop="title"
@@ -69,11 +73,11 @@
       <el-table-column
         label="状态">
         <template slot-scope="scope">
-          <el-tag v-if="scope.row.status === 0">草稿</el-tag>
-          <el-tag v-else-if="scope.row.status === 1" type="info">待审核</el-tag>
+          <el-tag :type="articlesStatus[scope.row.status].type">{{ articlesStatus[scope.row.status].text }}</el-tag>
+          <!-- <el-tag v-else-if="scope.row.status === 1" type="info">待审核</el-tag>
           <el-tag v-else-if="scope.row.status === 2" type="success">审核通过</el-tag>
           <el-tag v-else-if="scope.row.status === 3" type="warning">审核失败</el-tag>
-          <el-tag v-else-if="scope.row.status === 4" type="danger"> 已删除</el-tag>
+          <el-tag v-else-if="scope.row.status === 4" type="danger"> 已删除</el-tag> -->
         </template>
       </el-table-column>
       <el-table-column
@@ -95,7 +99,9 @@
 		<el-pagination
 			background
 			layout="prev, pager, next"
-			:total="1000"> 
+			:total="totalCount"
+      @current-change="onCurrentChange"
+      :page-size="pageSize"> 
 		</el-pagination>
 </el-card>
 
@@ -122,22 +128,41 @@ import { getArticles } from '@/api/articles'
         },
 					value1: '',
           articles: [],
+          articlesStatus: [
+            {status: 0, text: '草稿',type: ''},
+            {status: 1, text: '待审核',type: 'info'},
+            {status: 2, text: '审核通过',type: 'success'},
+            {status: 3, text: '审核失败',type: 'warning'},
+            {status: 4, text: '已删除',type: 'danger'}
+          ],
+          totalCount: 0 ,//总数据量,
+          pageSize: 10
      }
    },
    methods: {
-     loadArticles() {
-       getArticles().then(res => {
+     loadArticles(page = 1) {
+       getArticles({
+         page,
+         per_page: this.pageSize
+       }).then(res => {
          //先不用传参，等到做分页的时候再传参
-         console.log(res)
-         this.articles = res.data.data.results
+        //  console.log(res)
+        const { results, total_count} = res.data.data
+         this.articles = results
+         this.totalCount = total_count
        })
      },
+      // 分页处理函数
+     onCurrentChange(page){
+       this.loadArticles(page)
+     },
+
       onSubmit() {
         console.log('submit!');
       }
     },
 		created(){
-			this.loadArticles()
+			this.loadArticles(1)
 		},
    components: {
 
@@ -159,5 +184,12 @@ import { getArticles } from '@/api/articles'
 
  .list-table{
 	 margin-bottom: 20px;
+ }
+
+
+ .articles-cover{
+   width: 100px;
+   height: 100px;
+   background-size: cover;
  }
 </style>

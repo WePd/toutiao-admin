@@ -11,7 +11,7 @@
           'el-icon-s-fold': isCollapse,
           'el-icon-s-unfold': !isCollapse,
           }
-        ">头条管理</i>
+        ">   头条管理</i>
       </div>  
         <el-dropdown :hide-on-click="false">
           <div class="avatar-wrap">
