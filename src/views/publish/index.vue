@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getArticlesChannels, addArticles } from '@/api/articles'
+import { getArticlesChannels, addArticles, updateArticle, getArticle } from '@/api/articles'
 
  export default {
    name:'PublishIndex',
@@ -60,6 +60,10 @@ import { getArticlesChannels, addArticles } from '@/api/articles'
    },
 	 created(){
 		 this.loadChannels()
+
+		 if(this.$route.query.id){
+			 this.loadArticle()
+		 }
 	 },
 	 methods: {
 		 onPublish (draft = false) {
@@ -77,6 +81,14 @@ import { getArticlesChannels, addArticles } from '@/api/articles'
 			loadChannels () {
 				getArticlesChannels().then( res => {
 					this.channels = res.data.data.channels
+				})
+			},
+
+			//修改文章
+			loadArticle(){
+				getArticle(this.$route.query.id).then(res => {
+					// console.log(res)
+					this.article = res.data.data 
 				})
 			}
 	 },

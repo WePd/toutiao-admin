@@ -102,7 +102,13 @@
         label="操作">
       <template slot-scope="scope">
         <el-button
-          size="mini" icon="el-icon-edit"  type="success" circle></el-button>
+          size="mini" 
+          icon="el-icon-edit"  
+          type="success" 
+          circle
+          @click="$router.push('/publish?id=' + scope.row.id)"
+          >
+        </el-button>
         <el-button
           size="mini"
           type="danger" icon="el-icon-delete" circle

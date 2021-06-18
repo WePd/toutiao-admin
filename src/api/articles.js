@@ -50,3 +50,28 @@ export const addArticles = (data, draft = false) => {
         data
     })
 }
+
+//修改文章
+export const updateArticles = (articleId, data, draft = false) => {
+    return request({ 
+        method: 'PUT',
+        url: `/mp/v1_0/articles/${ articleId}`,
+        //Body参数使用data设置
+        //Query参数使用params设置
+        //Header参数使用header设置
+        params: {
+            draft
+        },
+        data
+    })
+}
+//获取指定文章
+export const getArticle = articleId => {
+    return request({ 
+        method: 'GET',
+        url: `/mp/v1_0/articles/${ articleId}`,
+        //Body参数使用data设置
+        //Query参数使用params设置
+        //Header参数使用header设置
+    })
+}
