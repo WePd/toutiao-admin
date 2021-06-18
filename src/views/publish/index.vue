@@ -4,7 +4,7 @@
         <div slot="header" class="clearfix">
             <el-breadcrumb separator-class="el-icon-arrow-right">
 							<el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-							<el-breadcrumb-item>发布文章</el-breadcrumb-item>
+							<el-breadcrumb-item>{{ $route.query.id ? '修改文章' : '发布文章'}}</el-breadcrumb-item>
     				</el-breadcrumb>
         </div>
 				<el-form ref="form" :model="article" label-width="40px">
@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { getArticlesChannels, addArticles, updateArticle, getArticle } from '@/api/articles'
+import { getArticlesChannels, addArticles, updateArticles, getArticle } from '@/api/articles'
 
  export default {
    name:'PublishIndex',
@@ -62,21 +62,33 @@ import { getArticlesChannels, addArticles, updateArticle, getArticle } from '@/a
 		 this.loadChannels()
 
 		 if(this.$route.query.id){
+			//  console.log("执行到这里了")
 			 this.loadArticle()
 		 }
 	 },
 	 methods: {
 		 onPublish (draft = false) {
-        // 找到数据接口
+			 //加一个判断，如果是修改文章，则执行修改操作，否则执行添加操作
+			 if(this.$route.query.id){
+				 //更新文章操作
+				 updateArticles(this.$route.query.id, this.article, draft).then( res => {
+					 console.log(res.data)
+					 this.$message({
+						 message: `${ draft ? '存入草稿' : '发布'}成功`,
+						 type: 'success'
+					 })
+				 })
+			 }else{
+        // 发布文章操作
 				addArticles(this.article, draft).then(res => {
 					this.$message({
-						message: "发布成功",
-						type: 'succeed'
+						message: `${draft ? '存入草稿' : '发布'}成功`,
+						type: 'success'
 					})
 				})
-				// 封装请求
-				// 请求提交表单
-				// 处理响应
+				//发布成功后跳转到内容管理界面
+				this.$router.push('/article')	
+			 }
       },
 			loadChannels () {
 				getArticlesChannels().then( res => {
