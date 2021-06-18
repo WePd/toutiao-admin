@@ -34,3 +34,19 @@ export const deleteArticle = articleId => {
         //Header参数使用header设置
     })
 }
+
+
+//上传文章
+export const addArticles = (data, draft = false) => {
+    return request({ 
+        method: 'POST',
+        url: '/mp/v1_0/articles',
+        //Body参数使用data设置
+        //Query参数使用params设置
+        //Header参数使用header设置
+        params: {
+            draft
+        },
+        data
+    })
+}
