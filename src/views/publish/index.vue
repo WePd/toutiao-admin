@@ -12,15 +12,15 @@
 						<el-input v-model="article.title"></el-input>
 					</el-form-item>
 						<el-form-item label="内容">
-						<el-input type="textarea" v-model="article.content"></el-input>
+						<el-tiptap v-model="article.content" :extensions="extensions" ></el-tiptap>
 					</el-form-item>
 						<el-form-item label="封面">
-						<el-radio-group v-model="article.cover.type">
-							<el-radio :label="1">单图</el-radio>
-							<el-radio :label="3">双图</el-radio>
-							<el-radio :label="0">无图</el-radio>
-							<el-radio :label="-1">自动</el-radio>
-						</el-radio-group>
+							<el-radio-group v-model="article.cover.type">
+								<el-radio :label="1">单图</el-radio>
+								<el-radio :label="3">双图</el-radio>
+								<el-radio :label="0">无图</el-radio>
+								<el-radio :label="-1">自动</el-radio>
+							</el-radio-group>
 					</el-form-item>
 					<el-form-item label="频道">
 						<el-select v-model="article.channel_id" placeholder="请选择频道">
@@ -38,7 +38,20 @@
 
 <script>
 import { getArticlesChannels, addArticles, updateArticles, getArticle } from '@/api/articles'
-
+import {
+  ElementTiptap,
+  Doc,
+  Text,
+  Paragraph,
+  Heading,
+  Bold,
+  Underline,
+  Italic,
+  Strike,
+  ListItem,
+  BulletList,
+  OrderedList,
+} from 'element-tiptap';
  export default {
    name:'PublishIndex',
    data () {
@@ -52,11 +65,24 @@ import { getArticlesChannels, addArticles, updateArticles, getArticle } from '@/
 						images: []
 					},
 					channel_id: null
-				}
+				},
+				extensions: [
+					new Doc(),
+					new Text(),
+					new Paragraph(),
+					new Heading({ level: 5 }),
+					new Bold({ bubble: true }), // render command-button in bubble menu.
+					new Underline({ bubble: true, menubar: false }), // render command-button in bubble menu but not in menubar.
+					new Italic(),
+					new Strike(),
+					new ListItem(),
+					new BulletList(),
+					new OrderedList(),
+      ],
       }
      },
    components: {
-
+		 'el-tiptap': ElementTiptap,
    },
 	 created(){
 		 this.loadChannels()
