@@ -8,11 +8,11 @@
     				</el-breadcrumb>
         </div>
 				<el-form ref="form" :model="article" label-width="40px">
-					<el-form-item label="标题">
-						<el-input v-model="article.title"></el-input>
+					<el-form-item label="标题" prop="title">
+						<el-input v-model="article.title" ></el-input>
 					</el-form-item>
-						<el-form-item label="内容">
-						<el-tiptap v-model="article.content" :extensions="extensions" ></el-tiptap>
+						<el-form-item label="内容" prop="content">
+						<el-tiptap lang="zh" v-model="article.content" :extensions="extensions"  height="400"  placeholder="请输入文章内容 …"></el-tiptap>
 					</el-form-item>
 						<el-form-item label="封面">
 							<el-radio-group v-model="article.cover.type">
@@ -43,6 +43,7 @@ import {
   Doc,
   Text,
   Paragraph,
+	Image,
   Heading,
   Bold,
   Underline,
@@ -51,7 +52,12 @@ import {
   ListItem,
   BulletList,
   OrderedList,
+	Fullscreen
 } from 'element-tiptap';
+import 'element-tiptap/lib/index.css';
+import { uploadImage } from '@/api/images'
+
+
  export default {
    name:'PublishIndex',
    data () {
@@ -68,6 +74,16 @@ import {
 				},
 				extensions: [
 					new Doc(),
+					new Image({
+						//图片上传方法
+						uploadRequest(file){
+							const fd = new FormData()
+							fd.append('image', file)
+							 return uploadImage(fd).then( res => {
+								return res.data.data.url
+							})
+						}
+					}),
 					new Text(),
 					new Paragraph(),
 					new Heading({ level: 5 }),
@@ -78,8 +94,9 @@ import {
 					new ListItem(),
 					new BulletList(),
 					new OrderedList(),
+					new Fullscreen(),
       ],
-      }
+  }
      },
    components: {
 		 'el-tiptap': ElementTiptap,
@@ -129,7 +146,7 @@ import {
 					this.article = res.data.data 
 				})
 			}
-	 },
+	 }, 
  }
 </script>
 
