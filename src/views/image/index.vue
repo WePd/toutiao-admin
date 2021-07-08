@@ -10,71 +10,60 @@
             	<!-- <el-button style="float: right; padding: 5px 0" type="text">上传图片</el-button> -->
     			</div>
     			<div style="display:flex;
-											width: 120px;
-											height: 30px;
-											padding-bottom: 18px ;">
-						<el-radio-group v-model="radio1" size="mini">
-							<el-radio-button label="全部"></el-radio-button>
-							<el-radio-button label="收藏"></el-radio-button>
+											padding-bottom: 18px;
+											justify-content:space-between"> 
+						<el-radio-group v-model="collect" size="mini" >
+							<!-- 直接注册点击事件的时候没有效果需要添加.native -->
+							<el-radio-button :label="false" @click.native="loadImages(false)">全部</el-radio-button>
+							<el-radio-button :label="true" @click.native="loadImages(true)">收藏</el-radio-button>
     				</el-radio-group>
+						<el-button size="mini" type="success" @click="" >上传素材</el-button>
   				</div>
 					<!-- 素材列表 -->
 							<el-row :gutter="10">
-								<el-col  :span="4">
+								<el-col  :span="4" v-for="(img, index) in images" :key="index">
 									<el-image
 										style="width: 100px; height: 100px"
-										:src="url"
+										:src="img.url"
 										fit="cover">
 									</el-image>
 								</el-col>
-								<el-col :span="4">
-									<el-image
-										style="width: 100px; height: 100px"
-										:src="url"
-										fit="cover">
-									</el-image>
-								</el-col>
-								<el-col :span="4">
-									<el-image
-										style="width: 100px; height: 100px"
-										:src="url"
-										fit="cover">
-									</el-image></el-col>
-								<el-col :span="4">
-									<el-image
-										style="width: 100px; height: 100px"
-										:src="url"
-										fit="cover">
-									</el-image>
-								</el-col>
-								<el-col :span="4">
-									<el-image
-										style="width: 100px; height: 100px"
-										:src="url"
-										fit="cover">
-									</el-image>
-								</el-col>
-								<el-col :span="4">
-									<el-image
-										style="width: 100px; height: 100px"
-										:src="url"
-										fit="cover">
-									</el-image>
-								</el-col>	
 							</el-row>
     		</el-card>
+				<el-dialog title="收货地址" :visible.sync="dialogUploadVisible">
+					<el-table :data="gridData">
+						<el-table-column property="date" label="日期" width="150"></el-table-column>
+						<el-table-column property="name" label="姓名" width="200"></el-table-column>
+						<el-table-column property="address" label="地址"></el-table-column>
+					</el-table>
+				</el-dialog>
     </div>
 </template>
 
 <script>
+import { getImages } from '@/api/images'
 export default {
 	name: 'ImageIndex',
 	data(){
 		return {
-				radio1: '全部',
-				url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'
+				collect: false,
+				images: [],
+				dialogUploadVisible: false
 	    }
- 		}
+ 	},
+	methods: {
+		  loadImages(collect=false){
+			  getImages({
+					collect
+				}).then( res => {
+					this.images = res.data.data.results
+			})
+		 }
+	},
+	created(){
+		 this.loadImages(false)
+	}
+
 }
 </script>
 
