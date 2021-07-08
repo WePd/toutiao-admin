@@ -164,9 +164,7 @@ import { uploadImage } from '@/api/images'
 			 }
 				 
 			 })
-
-			 
-    },
+		 },
 			loadChannels () {
 				getArticlesChannels().then( res => {
 					this.channels = res.data.data.channels
